@@ -3,35 +3,37 @@ class Tree:
       self.raiz = None
 
    def inOrdem(self):
-      if self.raiz != None:
-         return self.inOrdem()
+      if self.raiz != None: return self.inOrdem()
 
    #Método para encontrar o nível
    def nivel(self, valor):
-      if self.raiz != None:
-         return self.raiz.nivel(valor)
+      if self.raiz != None: return self.raiz.nivel(valor)
 
    def insere(self, valor):
-      if self.raiz == None:
-         self.raiz = No(valor)
-      else:
-         self.raiz.insere(valor)
+      if self.raiz == None: self.raiz = No(valor)
+      
+      else: self.raiz.insere(valor)
 
    def balanceia_dir(self):
-      if self.raiz != None:
-         return self.raiz.balanceia_dir()
+      if self.raiz != None: return self.raiz.balanceia_dir()
 
    def balanceia_esq(self):
-      if self.raiz != None:
-         return self.raiz.balanceia_esq()
+      if self.raiz != None: return self.raiz.balanceia_esq()
 
    def altura(self):
-      if self.raiz != None:
-         return self.raiz.altura()
+      if self.raiz != None: return self.raiz.altura()
 
    def calcfb(self):
-      if self.raiz != None:
-         return self.raiz.calcfb()
+      if self.raiz != None: return self.raiz.calcfb()
+
+   def balanceia_dir(self):
+      if self.raiz != None: self.raiz.balanceia_dir()
+
+   def balanceia_sqr(self):
+      if self.raiz != None: self.raiz.balanceia_sqr()
+
+   def printai(self):
+      print(self)
 
 #################################################################################
 
@@ -70,59 +72,46 @@ class No:
       elif self.fb == -2: self.balanceia_dir()
 
    def balanceia_dir(self):
-      a = self.info
-      b = self.info.esq.info
-      t = b.dir.info 
-              
-      self.info = b 
-      b.dir.info = a 
-      a.esq.info = t
+      q = self
+      temp = q.dir
+      q.dir = self  
+      self.esq= temp 
+      p=q 
       #METE O CÓDIGO AE
 
    def balanceia_esq(self):
-        a = self.info 
-        b = self.info.dir.info 
-        t = b.esq.info 
-        
-        self.info = b
-        b.sqr.info = a
-        a.dir.info = t
+      q = self
+      temp = q.esq
+      q.esq = self
+      self.esq= temp 
+      p=q
       #METE O CÓDIGO AE
 
    def calcfb(self):
-      if self.dir != None and self.esq != None:
-         return self.dir.altura() - self.esq.altura()
+      if self.dir != None and self.esq != None: return self.dir.altura() - self.esq.altura()
 
       else:
-         if self.dir == None:
-            return 0 - self.esq.altura()
+         if self.dir == None: return 0 - self.esq.altura()
 
-         else:
-            return self.dir.altura() - 0
-
+         else: return self.dir.altura() - 0
 
    def altura(self):
       esqu = dire = 0
 
-   if self.esq != None:
-      esqu = self.esq.altura()
+      if self.esq != None: esqu = self.esq.altura()
 
-   if self.dir != None:
-      dire = self.dir.altura()
+      if self.dir != None: dire = self.dir.altura()
 
-   if esqu > dire:
-      return esqu + 1
-   else:
-      return dire + 1
+      if esqu > dire: return esqu + 1
+      
+      else: return dire + 1
 
    def inOrdem(self):
-      if self.esq != None:
-         self.esq.inOrdem()
+      if self.esq != None: self.esq.inOrdem()
          
       print(self.info)
       
-      if self.dir != None:
-         self.dir.inOrdem()
+      if self.dir != None: self.dir.inOrdem()
 
 
    def nivel(self, valor):
