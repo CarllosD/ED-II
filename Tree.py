@@ -8,34 +8,31 @@ class Tree:
    #Método para encontrar o nível
    def nivel(self, valor):
       if self.raiz != None: return self.raiz.nivel(valor)
-
+      
+   #INSERE NOS NA AVL
    def insere(self, valor):
       if self.raiz == None: self.raiz = No(valor)
       
       else: self.raiz.insere(valor)
-
+      
+   #BALANCEIA P/ ESQUERDA QUANDO O FB É POSITIVO
    def balanceia_dir(self):
       if self.raiz != None: return self.raiz.balanceia_dir()
 
+   #BALANCEIA P/ DIREITA QUANDO O FB É NEGATIVO
    def balanceia_esq(self):
       if self.raiz != None: return self.raiz.balanceia_esq()
 
    def altura(self):
       if self.raiz != None: return self.raiz.altura()
 
+   #CALCULA FB (FATOR DE BALANCEAMENTO) DO NO
    def calcfb(self):
       if self.raiz != None: return self.raiz.calcfb()
-
-   def balanceia_dir(self):
-      if self.raiz != None: self.raiz.balanceia_dir()
-
-   def balanceia_sqr(self):
-      if self.raiz != None: self.raiz.balanceia_sqr()
-
-   def printai(self):
-      print(self)
+      
 
 #################################################################################
+
 
 class No:
    def __init__(self, valor):
@@ -71,11 +68,13 @@ class No:
 
       elif self.fb == -2: self.balanceia_dir()
 
+      elif self.fb * -1 > 2: print("FUDEO!!! -> ",+self.info)
+
    def balanceia_dir(self):
       q = self
       temp = q.dir
-      q.dir = self  
-      self.esq= temp 
+      q.dir = self
+      self.esq= temp
       p=q 
       #METE O CÓDIGO AE
 
@@ -96,15 +95,15 @@ class No:
          else: return self.dir.altura() - 0
 
    def altura(self):
-      esqu = dire = 0
+      esq = dir = 0
 
-      if self.esq != None: esqu = self.esq.altura()
+      if self.esq != None: esq = self.esq.altura()
 
-      if self.dir != None: dire = self.dir.altura()
+      if self.dir != None: dir = self.dir.altura()
 
-      if esqu > dire: return esqu + 1
+      if esq > dir: return esq + 1
       
-      else: return dire + 1
+      else: return dir + 1
 
    def inOrdem(self):
       if self.esq != None: self.esq.inOrdem()
