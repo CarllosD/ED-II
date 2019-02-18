@@ -2,19 +2,20 @@ class Tree:
    def __init__(self):
       self.raiz = None
 
+   #IMPRIME TODOS DOS NÓS EM ORDEM
    def inOrdem(self):
       if self.raiz != None: return self.inOrdem()
 
-   #Método para encontrar o nível
+   #
    def nivel(self, valor):
       if self.raiz != None: return self.raiz.nivel(valor)
       
-   #INSERE NOS NA AVL
-   def insere(self, valor):
+   #INSERE NÓS NA AVL
+   def insere(self,valor):
       if self.raiz == None:
          self.raiz = No(valor)
-         print('arvore: {}, FB: {}'.format(self.raiz.info,self.raiz.fb))
-      
+         print('raiz: {} | FB: {}'.format(self.raiz.info,self.raiz.fb))
+
       else: self.raiz.insere(valor)
       
    #BALANCEIA P/ ESQUERDA QUANDO O FB É POSITIVO
@@ -24,7 +25,8 @@ class Tree:
    #BALANCEIA P/ DIREITA QUANDO O FB É NEGATIVO
    def balanceia_esq(self):
       if self.raiz != None: return self.raiz.balanceia_esq()
-
+      
+   #RETORNA A ALTURA DA ÁRVORE
    def altura(self):
       if self.raiz != None: return self.raiz.altura()
 
@@ -32,104 +34,124 @@ class Tree:
    def calcfb(self):
       if self.raiz != None: return self.raiz.calcfb()
 
-   #RETORNA O FB DE UM DETERMINADO NÓ
-   def achafb(self,valor):
-            if self.raiz !=None:
-                  self.raiz.achafb(valor)
+   #IMPRIME O FB DE TODOS OS NÓS DA ÁRVORE
+   def showFb(self):
+      if self.raiz != None: self.raiz.showFb()
+
+   #RECEBE O NÓ QUE SE DESEJA BALANCEAR COMO ARGUMENTO
+   def balanceia(self, raiz):
+      if self.raiz != None: self.raiz.balanceia(raiz)
       
 
 #################################################################################
 
 
-class No:
+class No(Tree):
    def __init__(self, valor):
       self.info = valor
       self.esq = None
       self.dir = None
       self.fb = 0
 
-   def achafb(self,valor):
-            if valor == self.info:
-                  print("FB de",valor,"é:",self.fb)
-                  
-            else:
-                  print("entrou aqui")
-                  if valor < self.info:
-                        print("entrou aqui esquerda")
-                        self.esq.achafb(valor)
-                  else:
-                        print("entrou aqui direita")
-                        self.dir.achafb(valor)
+   def showFb(self):
+      if self.esq != None: self.esq.showFb()
+      
+      print('Nó:  {} | FB: {}'.format(self.info, self.fb))
+      
+      if self.dir != None: self.dir.showFb()
 
    def insere(self, valor):
       if valor <= self.info:
          if self.esq == None:
             self.esq = No(valor)
             self.fb = self.calcfb()
-            print('arvore: {}, FB: {}'.format(self.info,self.fb))
+            #print('arvore: {}, FB: {}'.format(self.info,self.fb))
 
          else:
             self.esq.insere(valor)
             self.fb = self.calcfb()
-            print('arvore: {}, FB: {}'.format(self.info,self.fb))
+            #print('arvore: {}, FB: {}'.format(self.info,self.fb))
 
       else:
          if self.dir == None:
             self.dir = No(valor)
             self.fb = self.calcfb()
-            print('arvore: {}, FB: {}'.format(self.info,self.fb))
+            #print('arvore: {}, FB: {}'.format(self.info,self.fb))
             
          else:
             self.dir.insere(valor)
             self.fb = self.calcfb()
-            print('arvore: {}, FB: {}'.format(self.info,self.fb))
+            #print('arvore: {}, FB: {}'.format(self.info,self.fb))
 
-      if self.fb == 2: self.balanceia_esq()
+      if abs(self.fb) == 2:
+         self.balanceia(self)
 
-      elif self.fb == -2: self.balanceia_dir()
+      #if self.fb == 2: self.balanceia_esq(self)
 
-      elif self.fb * -1 > 2: print("FUDEO!!! -> ", self.info)
+      #elif self.fb == -2: self.balanceia_dir(self)
 
-   def balanceia_dir(self):
-      print('nó sendo balanceado: {} | FB: {}'.format(self.info, self.fb))
-      q = self
-      temp = q.dir
-      q.dir = self
-      self.esq= temp
-      p=q 
-      #METE O CÓDIGO AE
-
-   def balanceia_esq(self):
-      print('nó sendo balanceado: {} | FB: {}'.format(self.info, self.fb))
-      q = self
-      temp = q.esq
-      q.esq = self
-      self.esq= temp 
-      p=q
-      #METE O CÓDIGO AE
-
-   def calcfb(self):
+      #elif self.fb * -1 > 2: print("FUDEO!!! -> ", self.info)
       
 
-   '''def calcfb(self):
-      if self.dir != None and self.esq != None: return 0
+   def balanceia_dir(self, raiz):
+      print('nó sendo balanceado: {} | FB: {}'.format(raiz.info, self.fb))
+      q= raiz.esq
+      temp = q.dir
+      q.dir = raiz
+      self.esq= temp
+      self= q
+
+   def balanceia_esq(self, raiz):
+      print('nó sendo balanceado: {} | FB: {}'.format(raiz.info, self.fb))
+      q= raiz.dir
+      temp = q.esq
+      q.esq = raiz
+      self.dir= temp
+      raiz= q
+
+   def balanceia(self, raiz):
+      #ROTAÇÃO ESQUERDA LL
+      if raiz.fb == 2 and raiz.dir.fb == 1:
+         print('nó sendo balanceado: {} | FB: {} | RR'.format(raiz.info, self.fb))
+         q= raiz.dir
+         temp = q.esq
+         q.esq = raiz
+         self.dir= temp
+         raiz= q
+      
+      #ROTAÇÃO DIREITA RR 
+      if raiz.fb == -2 and raiz.esq.fb == -1:
+         print('nó: {} | FB: {}| esq.FB:{} | RR'.format(raiz.info, raiz.fb, raiz.esq.fb))
+         q= raiz.esq
+         temp = q.dir
+         q.dir = raiz
+         self.esq= temp
+         self= q
+         
+         
+      #ROTAÇÃO LR
+      if raiz.fb == 2 and raiz.dir == -1:
+         
+         return
+      
+      #ROTAÇÃO RL
+      if raiz.fb == -2 and raiz.dir == 1:
+         
+         
+         return
+
+   def calcfb(self):
+      if self.dir == None and self.esq == None: return 0
+
+      elif self.dir != None and self.esq == None: return self.dir.altura()
+
+      elif self.dir == None and self.esq != None: return -self.esq.altura()
+
+      elif self.dir != None and self.esq != None: return self.dir.altura() - self.esq.altura()
 
       else:
-         if self.dir == None and self.esq != None:
-            return 0 - self.esq.altura()
-
-         elif self.dir != None and self.esq == None:
-            return self.dir.altura()
-
-         else: return self.dir.altura() - self.esq.altura()'''
-
-   '''def calcfb(self):
-      if self.dir != None and self.esq != None: return self.dir.altura() - self.esq.altura()
-
-      else:
-         if self.dir == None: return 0 - self.esq.altura()
-
-         else: return self.dir.altura() - 0'''
+         print('DEU RUIM AQUI NO \'calcfb\'')
+         return None
 
    def altura(self):
       esq = dir = 0
